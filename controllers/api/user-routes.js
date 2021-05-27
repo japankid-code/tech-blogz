@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User, Post, Comment } = require('../../models');
+const withAuth = require('../utils/auth');
 
 // get all
 router.get('/', (req, res) => {
@@ -68,7 +69,7 @@ router.post('/', (req, res) => {
 });
 
 // update user creds
-router.put('/:id', (req, res) => {
+router.put('/:id', withAuth, (req, res) => {
   User.update(req.body, {
     // initialize hook hashing
     individualHooks: true,
@@ -88,7 +89,7 @@ router.put('/:id', (req, res) => {
 });
 
 // delete users
-router.delete('/:id', (req, res) => {
+router.delete('/:id', withAuth, (req, res) => {
   User.destroy({
     where: { id: req.params.id }
   })
